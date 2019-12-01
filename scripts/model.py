@@ -12,7 +12,7 @@ def MSB(filter_num):
     def f(x):
         params = {
             'strides': 1,
-            'activation': None,
+            'activation': 'relu',
             'padding': 'same'
         }
         x1 = Conv2D(filters=filter_num, kernel_size=(9, 9), **params)(x)
@@ -29,7 +29,7 @@ def MSB_mini(filter_num):
     def f(x):
         params = {
             'strides': 1,
-            'activation': None,
+            'activation': 'relu',
             'padding': 'same'
         }
         x2 = Conv2D(filters=filter_num, kernel_size=(7, 7), **params)(x)
@@ -48,9 +48,9 @@ def MSCNN(input_shape=(224, 224, 3)):
     :param input_shape 输入图片尺寸
     :return:
     """
-    input_layer = Input(shape=input_shape)
+    input_tensor = Input(shape=input_shape)
     # block1
-    x = Conv2D(filters=64, kernel_size=(9, 9), strides=1, padding='same', activation='relu')(input_layer)
+    x = Conv2D(filters=64, kernel_size=(9, 9), strides=1, padding='same', activation='relu')(input_tensor)
     # block2
     x = MSB(4*16)(x)
     x = Activation('relu')(x)
@@ -69,10 +69,9 @@ def MSCNN(input_shape=(224, 224, 3)):
 
     x = Conv2D(1000, (1, 1), activation='relu')(x)
 
-    x = Conv2D(1, (1, 1), activation='sigmoid')(x)
-    x = Activation('relu')(x)
+    x = Conv2D(1, (1, 1), activation='relu')(x)
 
-    model = Model(inputs=input_layer, outputs=x)
+    model = Model(inputs=input_tensor, outputs=x)
     return model
 
 
