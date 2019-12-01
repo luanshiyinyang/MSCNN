@@ -41,7 +41,9 @@ def get_samples(num):
         count_data, position_data = mat_annotation['count'], mat_annotation['frame'][0]
         return count_data, position_data
     counts_true, _ = get_annotation()
-    samples_index = random.sample([i for i in range(len(glob.glob('../data/mall_dataset/frames/*')))], num)
+    datasize = len(glob.glob('../data/mall_dataset/frames/*'))
+    # 从验证集选取测试图片
+    samples_index = random.sample([i for i in range(int(0.8*datasize), datasize)], num)
     samples = [glob.glob('../data/mall_dataset/frames/*')[i] for i in samples_index]
     images = []
     counts = []
