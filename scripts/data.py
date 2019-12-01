@@ -38,7 +38,7 @@ class MallDataset(object):
         :param positions
         :param size 神经网络输入层图片大小
         """
-        h, w = img.shape[0], img.shape[1]
+        h, w = img.shape[:-1]
         proportion_h, proportion_w = size / h, size / w  # 输入层需求与当前图片大小对比
         pixels = np.zeros((size, size))
 

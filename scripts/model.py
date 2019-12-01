@@ -40,6 +40,7 @@ def MSB_mini(filter_num):
         x4 = Conv2D(filters=filter_num, kernel_size=(3, 3), **params)(x)
         x = concatenate([x2, x3, x4])
         x = BatchNormalization()(x)
+        x = Activation('relu')(x)
         return x
     return f
 
@@ -56,23 +57,18 @@ def MSCNN(input_shape=(224, 224, 3)):
     x = Conv2D(filters=64, kernel_size=(9, 9), strides=1, padding='same', activation='relu')(input_tensor)
     # block2
     x = MSB(4*16)(x)
-    x = Activation('relu')(x)
     x = MaxPooling2D(pool_size=(2, 2), strides=(2, 2))(x)
     # block3
     x = MSB(4*32)(x)
-    x = Activation('relu')(x)
     x = MSB(4*32)(x)
-    x = Activation('relu')(x)
     x = MaxPooling2D(pool_size=(2, 2), strides=(2, 2))(x)
 
     x = MSB_mini(3*64)(x)
-    x = Activation('relu')(x)
     x = MSB_mini(3*64)(x)
-    x = Activation('relu')(x)
 
     x = Conv2D(1000, (1, 1), activation='relu', kernel_regularizer=l2(5e-4))(x)
 
-    x = Conv2D(1, (1, 1), activation='relu')(x)
+    x = Conv2D(1, (1, 1), activation='tanh')(x)
 
     model = Model(inputs=input_tensor, outputs=x)
     return model
