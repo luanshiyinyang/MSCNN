@@ -53,6 +53,7 @@ def train(args_):
     # load pretrained model
     if args_['pretrained'] == 'yes':
         model.load_weights('../models/best_model_weights.h5')
+        print("load model from ../models/")
 
     callbacks = get_callbacks()
 

@@ -68,6 +68,7 @@ def plot_sample(raw_images, maps, counts, true_counts):
         plt.imshow(maps[i][0])
         plt.title('people pred num {}'.format(counts[i]))
     plt.savefig('../results/rst.png')
+    plt.show()
 
 
 def save_result(raw_images, maps, counts, args_, true_counts):
