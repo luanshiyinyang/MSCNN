@@ -97,8 +97,8 @@ def test(args_):
         counts = []
         for sample in samples:
             dmap = np.squeeze(model.predict(sample), axis=-1)
-            counts.append(int(np.sum(dmap)))
             dmap = cv2.GaussianBlur(dmap, (15, 15), 0)
+            counts.append(int(np.sum(dmap)))
             maps.append(dmap)
         save_result(samples, maps, counts, args_, true_counts)
     else:

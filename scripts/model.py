@@ -6,6 +6,7 @@
 from keras.layers import Input, Conv2D, MaxPooling2D, concatenate, Activation, Dense
 from keras.layers.normalization import BatchNormalization
 from keras.models import Model
+from keras.regularizers import l2
 
 
 def MSB(filter_num):
@@ -13,7 +14,8 @@ def MSB(filter_num):
         params = {
             'strides': 1,
             'activation': 'relu',
-            'padding': 'same'
+            'padding': 'same',
+            'kernel_regularizer': l2(5e-4)
         }
         x1 = Conv2D(filters=filter_num, kernel_size=(9, 9), **params)(x)
         x2 = Conv2D(filters=filter_num, kernel_size=(7, 7), **params)(x)
@@ -30,7 +32,8 @@ def MSB_mini(filter_num):
         params = {
             'strides': 1,
             'activation': 'relu',
-            'padding': 'same'
+            'padding': 'same',
+            'kernel_regularizer': l2(5e-4)
         }
         x2 = Conv2D(filters=filter_num, kernel_size=(7, 7), **params)(x)
         x3 = Conv2D(filters=filter_num, kernel_size=(5, 5), **params)(x)
@@ -67,7 +70,7 @@ def MSCNN(input_shape=(224, 224, 3)):
     x = MSB_mini(3*64)(x)
     x = Activation('relu')(x)
 
-    x = Conv2D(1000, (1, 1), activation='relu')(x)
+    x = Conv2D(1000, (1, 1), activation='relu', kernel_regularizer=l2(5e-4))(x)
 
     x = Conv2D(1, (1, 1), activation='relu')(x)
 
