@@ -1,0 +1,7 @@
+.idea/
+venv/
+__pycache__/
+*.rar
+*.7z
+*.jpg
+mall_dataset/
