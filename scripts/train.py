@@ -9,6 +9,7 @@ from keras.optimizers import Adam
 from model import MSCNN
 from data import MallDataset, ShanghaitechDataset
 import os
+os.environ['TF_CPP_MIN_LOG_LEVEL'] = '2'
 
 
 def parse_command_params():
