@@ -142,9 +142,9 @@ class ShanghaitechDataset(object):
 
     def __init__(self, part='A'):
         if part == 'A':
-            self.folder = '../data/ShanghaiTech/part_A/'
+            self.folder = '../data/ShanghaiTech/part_A_final/'
         else:
-            self.folder = '../data/ShanghaiTech/part_B/'
+            self.folder = '../data/ShanghaiTech/part_B_final/'
 
     def get_annotation(self, folder, index):
         """
@@ -153,7 +153,7 @@ class ShanghaitechDataset(object):
         :param index: 图片索引,1开始
         :return:
         """
-        mat_data = loadmat(folder + 'ground-truth/GT_IMG_{}.mat'.format(index))
+        mat_data = loadmat(folder + 'ground_truth/GT_IMG_{}.mat'.format(index))
         positions, count = mat_data['image_info'][0][0][0][0][0], mat_data['image_info'][0][0][0][0][1][0][0]
         return positions, count
 
@@ -189,7 +189,7 @@ class ShanghaitechDataset(object):
         :return:
         """
         folder = self.folder + 'train_data/'
-        index_all = [i+1 for i in range(len(glob.glob(folder + 'images/*')))]
+        index_all = [i+1 for i in range(len(glob.glob(folder + 'images/*.jpg')))]
 
         i, n = 0, len(index_all)
         if batch_size > n:
@@ -205,7 +205,6 @@ class ShanghaitechDataset(object):
                 img = cv2.imread(folder + 'images/IMG_{}.jpg'.format(index_all[j]))
                 density = np.expand_dims(self.get_pixels(folder, img, index_all[j], size // 4), axis=-1)
                 img = cv2.resize(img, (size, size)) / 255.
-                density = density.reshape([density.shape[0], density.shape[1], -1])
                 batch_x.append(img)
                 batch_y.append(density)
             i += batch_size
@@ -217,7 +216,7 @@ class ShanghaitechDataset(object):
         :return:
         """
         folder = self.folder + 'test_data/'
-        index_all = [i + 1 for i in range(len(glob.glob(folder + 'images/*')))]
+        index_all = [i + 1 for i in range(len(glob.glob(folder + 'images/*.jpg')))]
 
         i, n = 0, len(index_all)
         if batch_size > n:
@@ -229,7 +228,6 @@ class ShanghaitechDataset(object):
                 i = 0
                 continue
             batch_x, batch_y = [], []
-            print("hello")
             for j in range(i, i + batch_size):
                 img = cv2.imread(folder + 'images/IMG_{}.jpg'.format(index_all[j]))
                 img = cv2.resize(img, (size, size)) / 255.

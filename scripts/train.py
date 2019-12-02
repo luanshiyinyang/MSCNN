@@ -9,7 +9,16 @@ from keras.optimizers import Adam
 from model import MSCNN
 from data import MallDataset, ShanghaitechDataset
 import os
+import warnings
+import tensorflow as tf
+import keras.backend.tensorflow_backend as KTF
+warnings.filterwarnings('ignore')
 os.environ['TF_CPP_MIN_LOG_LEVEL'] = '2'
+os.environ["CUDA_VISIBLE_DEVICES"] = "0"
+config = tf.ConfigProto()
+config.gpu_options.per_process_gpu_memory_fraction = 0.6 # 每个GPU现存上届控制在60%以内
+session = tf.Session(config=config)
+KTF.set_session(session )
 
 
 def parse_command_params():
@@ -20,8 +29,8 @@ def parse_command_params():
     parser = ArgumentParser()
     parser.add_argument('-e', '--epochs', default=50, help='how many epochs to fit')
     parser.add_argument('-v', '--show', default='yes', help='if show training log')
-    parser.add_argument('-b', '--batch', default=32, help='batch size of train')
-    parser.add_argument('-d', '--dataset', default='malldataset', help='which dataset to train')
+    parser.add_argument('-b', '--batch', default=16, help='batch size of train')
+    parser.add_argument('-d', '--dataset', default='shanghaitechdataset', help='which dataset to train')
     parser.add_argument('-p', '--pretrained', default='no', help='load your pretrained model in folder root/models')
     args_ = parser.parse_args()
     args_ = vars(args_)

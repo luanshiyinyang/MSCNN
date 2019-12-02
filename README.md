@@ -1,8 +1,12 @@
 # Multi-scale Convolution Neural Networks for Crowd Counting
+
+>密度图还要使用高斯滤波处理是因为在空间中计数时，每个人只占一个像素点导致最终得到的密度分布图特别稀疏，会导致模型收敛到全0状态。因此通过高斯处理后，密度图呈现出热力图的形式，一定程度上解决了稀疏问题。而且高斯处理后的密度图，总计数是不变的。
+
+
 ## 项目简介
-- 复现论文[Multi-scale Convolution Neural Networks for Crowd Counting](https://arxiv.org/abs/1702.02359)。
-- 目前，没有具体写的比较完善的基于Keras的复现（Keras比较容易上手，代码理解容易），这对于迅速成型系统的构建不太方便。
-- 本项目基于Keras（Tensorflow后端），在多个数据集上进行训练测试，模型泛化能力强。
+复现论文[Multi-scale Convolution Neural Networks for Crowd Counting](https://arxiv.org/abs/1702.02359)。考虑到目前还没有具体写的比较完善的基于Keras（或者TensorFlow2）的复现，这对于迅速成型的顶层系统的构建不太方便。本项目基于Keras（Tensorflow后端），在多个数据集上进行训练测试，模型泛化能力强。
+
+
 ## 数据集下载
 - ShanghaiTech Dataset
   - [下载地址](https://drive.google.com/open?id=1CW6PiAnLSWuUBX-2tVqQO5-1TDdilJB1)
@@ -11,7 +15,7 @@
 - The_UCF_CC_50 Dataset
   - [下载地址](https://drive.google.com/open?id=1MwfTXFQUTx_sqw-g-D7TDOox1S88XYVN)
 - 地址说明
-  - 不提供数据集官方地址，数据集均放置在我的谷歌云盘，开启共享，无法翻墙的可以邮箱联系我(luanshiyinyang@gmail.com)。
+  - 不提供数据集官方地址，数据集均放置在我的谷歌云盘，开启共享，无法翻墙的可以[邮箱](mailto:luanshiyinyang@gmail.com)联系我。
 ## 论文说明
 - 针对神经网络近几年的发展以及现有的网络模型难以优化以及计算耗时，主要提出了multi-scale blob模块（类Inception结构）进行相关特征的提取。
 - 作者主要提出了MSCNN的结构，该结构比起MCNN具有更好的处理能力及效果且参数量大幅度缩减，并且纵向对比了LBP+RR、MCNN+CCR、Zhang et al.和MCNN等模型。

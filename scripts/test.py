@@ -26,7 +26,7 @@ def parse_params():
     return args_
 
 
-def get_samples(num):
+def get_samples_malldataset(num):
     """
     获取测试图片
     :return:
@@ -56,6 +56,36 @@ def get_samples(num):
     return images, counts
 
 
+def get_samples_shanghaitech(num):
+    """
+    获取测试图片
+    :return:
+    """
+    def get_annotation(index):
+        """
+        读取2000个图片的注解，得到 每个图片的人数 和 每章图片的所有人坐标
+        Annotation按照图片命名顺序
+        :return:
+        """
+        mat_data = sio.loadmat('../data/ShanghaiTech/part_A_final/test_data/ground_truth/GT_IMG_{}.mat'.format(index))
+        position_data, count_data = mat_data['image_info'][0][0][0][0][0], mat_data['image_info'][0][0][0][0][1][0][0]
+        return count_data, position_data
+
+    datasize = len(glob.glob('../data/ShanghaiTech/part_A_final/test_data/images/*.jpg'))
+    # 从验证集选取测试图片
+    samples_index = random.sample([i for i in range(datasize)], num)
+    samples = [glob.glob('../data/ShanghaiTech/part_A_final/test_data/images/*.jpg')[i] for i in samples_index]
+    images = []
+    counts = []
+    for i in range(num):
+        filename = samples[i]
+        img = cv2.resize(cv2.imread(filename), (224, 224)) / 255.
+        img = np.expand_dims(img, axis=0)
+        images.append(img)
+        counts.append(get_annotation(samples_index[i])[0])
+    return images, counts
+
+
 def plot_sample(raw_images, maps, counts, true_counts):
     """
     演示测试的5个图片
@@ -70,7 +100,6 @@ def plot_sample(raw_images, maps, counts, true_counts):
         plt.imshow(maps[i][0])
         plt.title('people pred num {}'.format(counts[i]))
     plt.savefig('../results/rst.png')
-    plt.show()
 
 
 def save_result(raw_images, maps, counts, args_, true_counts):
@@ -95,7 +124,7 @@ def test(args_):
     model = MSCNN((224, 224, 3))
     if os.path.exists('../models/best_model_weights.h5'):
         model.load_weights('../models/best_model_weights.h5')
-        samples, true_counts = get_samples(5)
+        samples, true_counts = get_samples_shanghaitech(5)
         maps = []
         counts = []
         for sample in samples:

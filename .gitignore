@@ -5,3 +5,5 @@ __pycache__/
 *.7z
 *.jpg
 mall_dataset/
+*.rar
+*.zip
