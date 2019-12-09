@@ -176,7 +176,7 @@ class ShanghaitechDataset(object):
             if now_x >= size or now_y >= size:
                 # 越界则向下取整
                 pass
-                # print("Sorry skip the point, its index of all is {}".format(img_index))
+                # print("Sorry skip the point, image index of all is {}".format(img_index))
             else:
                 pixels[now_y, now_x] += 1
 
@@ -230,9 +230,9 @@ class ShanghaitechDataset(object):
             batch_x, batch_y = [], []
             for j in range(i, i + batch_size):
                 img = cv2.imread(folder + 'images/IMG_{}.jpg'.format(index_all[j]))
-                img = cv2.resize(img, (size, size)) / 255.
                 density = np.expand_dims(self.get_pixels(folder, img, index_all[j], size // 4), axis=-1)
                 density = density.reshape([density.shape[0], density.shape[1], -1])
+                img = cv2.resize(img, (size, size)) / 255.
                 batch_x.append(img)
                 batch_y.append(density)
             i += batch_size
