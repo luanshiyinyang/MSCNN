@@ -95,4 +95,4 @@ def MSCNN(input_shape=(224, 224, 3)):
 
 
 ## 补充说明
-训练完成的预训练模型可以在网盘下载，下载后放置在models文件夹即可。完整代码已经上传到我的Github，欢迎Star或者Fork。如有错误，欢迎指正。
+训练完成的预训练模型可以在[网盘](https://pan.baidu.com/s/1syEjwWVLjihEC5y2tQDdAA)下载（提取码jppg），下载后放置在models文件夹即可。完整代码已经上传到我的Github，欢迎Star或者Fork。如有错误，欢迎指正。
