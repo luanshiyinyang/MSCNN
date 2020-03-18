@@ -5,5 +5,7 @@ __pycache__/
 *.7z
 *.jpg
 mall_dataset/
+ShanghaiTech/
 *.rar
 *.zip
+*.h5

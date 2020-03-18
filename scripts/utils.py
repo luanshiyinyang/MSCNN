@@ -1,10 +1,3 @@
-# -*-coding:utf-8-*-
-"""author: Zhou Chen
-   datetime: 2019/7/10 22:39
-   desc: the project
-"""
-
-
 def visualize_dmap(img, dmap):
     """
 

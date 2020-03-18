@@ -1,8 +1,3 @@
-# -*-coding:utf-8-*-
-"""author: Zhou Chen
-   datetime: 2019/5/24 13:46
-   desc: the project
-"""
 from argparse import ArgumentParser
 import matplotlib.pyplot as plt
 import os
@@ -41,14 +36,16 @@ def get_samples_malldataset(num):
         count_data, position_data = mat_annotation['count'], mat_annotation['frame'][0]
         return count_data, position_data
     counts_true, _ = get_annotation()
-    datasize = len(glob.glob('../data/mall_dataset/frames/*'))
+    datasize = len(glob.glob('../data/mall_dataset/frames/*.jpg'))
     # 从验证集选取测试图片
     samples_index = random.sample([i for i in range(int(0.8*datasize), datasize)], num)
-    samples = [glob.glob('../data/mall_dataset/frames/*')[i] for i in samples_index]
+    samples = [glob.glob('../data/mall_dataset/frames/*.jpg')[i] for i in samples_index]
     images = []
     counts = []
     for i in range(num):
         filename = samples[i]
+        print(filename)
+        print(samples_index[i])
         img = cv2.resize(cv2.imread(filename), (224, 224)) / 255.
         img = np.expand_dims(img, axis=0)
         images.append(img)
@@ -74,7 +71,7 @@ def get_samples_shanghaitech(num):
     datasize = len(glob.glob('../data/ShanghaiTech/part_A_final/test_data/images/*.jpg'))
     # 从验证集选取测试图片
     samples_index = random.sample([i for i in range(datasize)], num)
-    samples = [glob.glob('../data/ShanghaiTech/part_A_final/test_data/images/*.jpg')[i] for i in samples_index]
+    samples = ['../data/ShanghaiTech/part_A_final/test_data/images/IMG_{}.jpg'.format(i) for i in samples_index]
     images = []
     counts = []
     for i in range(num):

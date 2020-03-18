@@ -1,24 +1,20 @@
-# -*-coding:utf-8-*-
-"""author: Zhou Chen
-   datetime: 2019/5/24 0:40
-   desc: the project
-"""
+import os
+os.environ['TF_CPP_MIN_LOG_LEVEL'] = '2'
+import warnings
+warnings.filterwarnings('ignore')
+
 from argparse import ArgumentParser
-from keras.callbacks import ReduceLROnPlateau, EarlyStopping, ModelCheckpoint
-from keras.optimizers import Adam
+from tensorflow.keras.callbacks import ReduceLROnPlateau, EarlyStopping, ModelCheckpoint
+from tensorflow.keras.optimizers import Adam, SGD
 from model import MSCNN
 from data import MallDataset, ShanghaitechDataset
-import os
-import warnings
 import tensorflow as tf
-import keras.backend.tensorflow_backend as KTF
-warnings.filterwarnings('ignore')
-os.environ['TF_CPP_MIN_LOG_LEVEL'] = '2'
-os.environ["CUDA_VISIBLE_DEVICES"] = "0"
-config = tf.ConfigProto()
-config.gpu_options.per_process_gpu_memory_fraction = 0.6 # 每个GPU现存上届控制在60%以内
-session = tf.Session(config=config)
-KTF.set_session(session )
+
+
+if tf.test.is_gpu_available():
+    print("use gpu 0")
+else:
+    print("no gpu")
 
 
 def parse_command_params():
@@ -43,7 +39,7 @@ def get_callbacks():
     :return:
     """
     early_stopping = EarlyStopping(monitor='val_loss', patience=20)
-    reduce_lr = ReduceLROnPlateau(monitor='loss', factor=0.1, patience=5, min_lr=1e-7, verbose=True)
+    reduce_lr = ReduceLROnPlateau(monitor='loss', factor=0.0005, patience=5, min_lr=1e-7, verbose=True)
     if not os.path.exists('../models'):
         os.mkdir('../models')
     model_checkpoint = ModelCheckpoint('../models/best_model_weights.h5', monitor='val_loss',
@@ -58,7 +54,7 @@ def train(args_):
     :return:
     """
     model = MSCNN((224, 224, 3))
-    model.compile(optimizer=Adam(lr=3e-4), loss='mse')
+    model.compile(optimizer=SGD(lr=3e-4, momentum=0.9), loss='mse')
     # load pretrained model
     if args_['pretrained'] == 'yes':
         model.load_weights('../models/best_model_weights.h5')

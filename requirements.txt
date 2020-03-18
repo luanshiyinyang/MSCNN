@@ -1,5 +1,4 @@
-keras==2.2.5
-tensorflow-gpu==1.15.0
+tensorflow-gpu>=2.0.0
 opencv-python
 numpy
 scipy

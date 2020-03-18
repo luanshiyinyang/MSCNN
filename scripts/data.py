@@ -1,8 +1,3 @@
-# -*-coding:utf-8-*-
-"""author: Zhou Chen
-   datetime: 2019/5/23 12:31
-   desc: the project
-"""
 from scipy.io import loadmat
 import glob
 import cv2
@@ -231,7 +226,6 @@ class ShanghaitechDataset(object):
             for j in range(i, i + batch_size):
                 img = cv2.imread(folder + 'images/IMG_{}.jpg'.format(index_all[j]))
                 density = np.expand_dims(self.get_pixels(folder, img, index_all[j], size // 4), axis=-1)
-                density = density.reshape([density.shape[0], density.shape[1], -1])
                 img = cv2.resize(img, (size, size)) / 255.
                 batch_x.append(img)
                 batch_y.append(density)

@@ -1,12 +1,6 @@
-# -*-coding:utf-8-*-
-"""author: Zhou Chen
-   datetime: 2019/5/24 0:14
-   desc: the project
-"""
-from keras.layers import Input, Conv2D, MaxPooling2D, concatenate, Activation, Dense
-from keras.layers.normalization import BatchNormalization
-from keras.models import Model
-from keras.regularizers import l2
+from tensorflow.keras.layers import Input, Conv2D, MaxPooling2D, concatenate, Activation, Dense, BatchNormalization
+from tensorflow.keras.models import Model
+from tensorflow.keras.regularizers import l2
 
 
 def MSB(filter_num):
@@ -68,7 +62,9 @@ def MSCNN(input_shape=(224, 224, 3)):
 
     x = Conv2D(1000, (1, 1), activation='relu', kernel_regularizer=l2(5e-4))(x)
 
-    x = Conv2D(1, (1, 1), activation='tanh')(x)
+    x = Conv2D(1, (1, 1))(x)
+    x = Activation('sigmoid')(x)
+    x = Activation('relu')(x)
 
     model = Model(inputs=input_tensor, outputs=x)
     return model
